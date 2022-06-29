@@ -10,8 +10,8 @@ class CCPB(tf.keras.layers.Layer):
   For reference: https://arxiv.org/pdf/2003.09669.pdf
   '''
   def __init__(self):
-    super(CCPB, self).__init__(img_size)
-    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu', input_shape = (img_size[0], img_size[1], -1))
+    super(CCPB, self).__init__(img_height, img_width)
+    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu', input_shape = (img_height, img_width, -1))
     
     self.conv1_branch1 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
     self.conv1_branch2 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
@@ -175,10 +175,10 @@ class BiCANet_with_backbone(Model):
     super(BiCANet_with_backbone, self).__init__()
 
     self.init_backbone(img_width, img_height)
-    self.ccpb1 = CCPB((img_height, img_width))
-    self.ccpb2 = CCPB((img_height, img_width))
-    self.ccpb3 = CCPB((img_height, img_width))
-    self.ccpb4 = CCPB((img_height, img_width))
+    self.ccpb1 = CCPB(img_height, img_width)
+    self.ccpb2 = CCPB(img_height//2, img_width//2)
+    self.ccpb3 = CCPB(img_height//4, img_width//4)
+    self.ccpb4 = CCPB(img_height//8, img_width//8)
 
     self.bcib = BCIB()
 
