@@ -145,7 +145,6 @@ class MCFB(tf.keras.layers.Layer):
   def __init__(self, img_width, img_height):
     super(MCFB, self).__init__()
     
-    self.input_layer = layers.InputLayer(input_shape = (img_height, img_width, 1))
     self.conv_3x3 = layers.Conv2D(filters = 1, kernel_size = 3, padding = 'same', activation = 'relu') 
     self.conv_1xK = layers.Conv2D(filters = 1, kernel_size = (1,5), padding = 'same', activation = 'relu') 
     self.conv_Kx1 = layers.Conv2D(filters = 1, kernel_size = (5,1), padding = 'same', activation = 'relu') 
@@ -156,7 +155,6 @@ class MCFB(tf.keras.layers.Layer):
     self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu') 
 
   def call(self, x):
-    x = self.input_layer(x)
     # local
     local_interactions = self.conv_3x3(x)
     # long-ranged
