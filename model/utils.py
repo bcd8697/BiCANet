@@ -59,8 +59,8 @@ def split_data(img_path, mask_path, save_path = '/content/', train_size = 0.75, 
       os.replace(img_path + name, save_path + '/test/images/' + name)
       os.replace(mask_path + name[:-3] + 'png', save_path + '/test/masks/' + name[:-3] + 'png')
     
-  os.rmdir(IMAGES_PATH)
-  os.rmdir(MASKS_PATH)
+  os.rmdir(img_path)
+  os.rmdir(mask_path)
 
 def parse_image(img_path):
   '''
