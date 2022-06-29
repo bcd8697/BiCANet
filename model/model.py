@@ -156,6 +156,7 @@ class MCFB(tf.keras.layers.Layer):
     self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu') 
 
   def call(self, x):
+    x = self.input_layer(x)
     # local
     local_interactions = self.conv_3x3(x)
     # long-ranged
