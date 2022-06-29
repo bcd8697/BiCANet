@@ -10,8 +10,8 @@ class CCPB(tf.keras.layers.Layer):
   For reference: https://arxiv.org/pdf/2003.09669.pdf
   '''
   def __init__(self):
-    super(CCPB, self).__init__()
-    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu')
+    super(CCPB, self).__init__(img_size)
+    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu', input_shape = (img_size[0], img_size[1], -1))
     
     self.conv1_branch1 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
     self.conv1_branch2 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
