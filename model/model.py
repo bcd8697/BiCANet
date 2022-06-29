@@ -11,17 +11,17 @@ class CCPB(tf.keras.layers.Layer):
   '''
   def __init__(self):
     super(CCPB, self).__init__()
-    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu')
+    self.conv_in = layers.Conv2D(filters = 12, kernel_size = 1, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
     
-    self.conv1_branch1 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
-    self.conv1_branch2 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
-    self.conv1_branch3 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu')
+    self.conv1_branch1 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
+    self.conv1_branch2 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
+    self.conv1_branch3 = layers.Conv2D(filters = 4, kernel_size = 1, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
 
-    self.conv3_branch21 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu')
-    self.conv3_branch31 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu')
-    self.conv3_branch32 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu')
+    self.conv3_branch21 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
+    self.conv3_branch31 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
+    self.conv3_branch32 = layers.Conv2D(filters = 4, kernel_size = 3, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
 
-    self.conv_out = layers.Conv2D(filters = 1, kernel_size = 1, padding = 'same', activation = 'relu')
+    self.conv_out = layers.Conv2D(filters = 1, kernel_size = 1, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal')
 
   
   def call(self, x):
@@ -145,14 +145,14 @@ class MCFB(tf.keras.layers.Layer):
   def __init__(self, img_width, img_height):
     super(MCFB, self).__init__()
 
-    self.conv_3x3 = layers.Conv2D(filters = 1, kernel_size = 3, padding = 'same', activation = 'relu') 
-    self.conv_1xK = layers.Conv2D(filters = 1, kernel_size = (1,5), padding = 'same', activation = 'relu') 
-    self.conv_Kx1 = layers.Conv2D(filters = 1, kernel_size = (5,1), padding = 'same', activation = 'relu') 
+    self.conv_3x3 = layers.Conv2D(filters = 1, kernel_size = 3, padding = 'same', activation = 'relu', kernel_initializer = 'he_normal') 
+    self.conv_1xK = layers.Conv2D(filters = 1, kernel_size = (1,5), padding = 'same', activation = 'relu', kernel_initializer = 'he_normal') 
+    self.conv_Kx1 = layers.Conv2D(filters = 1, kernel_size = (5,1), padding = 'same', activation = 'relu', kernel_initializer = 'he_normal') 
     self.maxpooling = layers.MaxPool2D(pool_size = 1, padding = 'same')
     
     self.M = max(img_width, img_height) # taking max of image's width and height
-    self.conv_1xM = layers.Conv2D(filters = 1, kernel_size = (1, self.M), padding = 'same', activation = 'relu') 
-    self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu') 
+    self.conv_1xM = layers.Conv2D(filters = 1, kernel_size = (1, self.M), padding = 'same', activation = 'relu', kernel_initializer = 'he_normal') 
+    self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu', kernel_initializer = 'he_normal') 
 
   def call(self, x):
     # local
