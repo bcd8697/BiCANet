@@ -1,15 +1,15 @@
 import tensorflow as tf
 
-def sigmoid_cross_entropy_loss(logits, labels, l = 0.1, model, img_size):
+def sigmoid_cross_entropy_loss(logits, labels, model, img_size, l = 0.1):
   '''
   Function to compute loss according to the formula L = L_f + lambda * sum(L_i)
   For reference: https://arxiv.org/pdf/1708.04943.pdf
   ----------
   logits - logits (images before sigmoid/softmax convertation)
   labels - mask elements
-  l - empirical coefficient, non-negative parameter that leverages the trade-off between two losses (L_f and L_i).
   model - object of NN class
   img_size - tuple or list with (height, with) of images for training
+  l - empirical coefficient, non-negative parameter that leverages the trade-off between two losses (L_f and L_i).
   ----------
   '''
   # compute loss L_f
