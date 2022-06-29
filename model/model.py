@@ -175,10 +175,10 @@ class BiCANet_with_backbone(Model):
     super(BiCANet_with_backbone, self).__init__()
 
     self.init_backbone(img_width, img_height)
-    self.ccpb1 = CCPB()
-    self.ccpb2 = CCPB()
-    self.ccpb3 = CCPB()
-    self.ccpb4 = CCPB()
+    self.ccpb1 = CCPB((img_height, img_width))
+    self.ccpb2 = CCPB((img_height, img_width))
+    self.ccpb3 = CCPB((img_height, img_width))
+    self.ccpb4 = CCPB((img_height, img_width))
 
     self.bcib = BCIB()
 
