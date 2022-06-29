@@ -20,7 +20,7 @@ def sigmoid_cross_entropy_loss(logits, labels, l = 0.1, model, img_size):
   # compute losses L_i
   for i in range(4):
     mod_seq = tf.keras.models.Sequential([tf.keras.models.Model(inputs = model.layers[0].inputs, 
-                                                                outputs = model.layers[0].get_layer('block' + str(i+1) + _pool').output),
+                                                                outputs = model.layers[0].get_layer('block' + str(i+1) + '_pool').output),
                                           model.layers[i+1] ])
     
     L_i += tf.nn.sigmoid_cross_entropy_with_logits(labels = labels,
