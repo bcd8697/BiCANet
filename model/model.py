@@ -226,4 +226,7 @@ class BiCANet_with_backbone(Model):
 
     # since we have only 2 classes, we may want to use sigmoid function instead of softmax
     # NB: we need to return logits for our loss function while training
-    return x if is_training else tf.math.sigmoid(x)
+    if is_training:
+      return x
+    
+    return tf.math.sigmoid(x)
