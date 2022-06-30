@@ -1,4 +1,3 @@
-# BiCANet
 <h1 align="center"> BiCANet: Bi-directional Contextual Aggregating Network for Image Semantic Segmentation
  </h1>
 
