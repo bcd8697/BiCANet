@@ -102,12 +102,21 @@ class MRF(tf.keras.layers.Layer):
   '''
   def __init__(self):
     super(MRF, self).__init__()
+    self.up2 = tf.keras.layers.UpSampling2D(size = 2, interpolation = 'bilinear')
+    self.up4 = tf.keras.layers.UpSampling2D(size = 4, interpolation = 'bilinear')
+    self.up8 = tf.keras.layers.UpSampling2D(size = 8, interpolation = 'bilinear')
   
   def call(self, path1, path2, path3, path4, is_training = False):
     path1 = path1
-    path2 = tf.image.resize(path2, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
-    path3 = tf.image.resize(path3, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
-    path4 = tf.image.resize(path4, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
+    path2 = self.up2(path2)
+    path3 = self.up4(path3)
+    path4 = self.up8(path4)
+    
+    if path1.shape != path2.shape or path1.shape != path3.shape or path1.shape != path4.shape:
+      path2 = tf.image.resize(path2, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
+      path3 = tf.image.resize(path3, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
+      path4 = tf.image.resize(path4, size =(path1.shape[1], path1.shape[2]), method = 'bilinear')
+    
     return tf.concat([path1, path2, path3, path4], axis = 3)
 
 class ChannelWiseAttention(tf.keras.layers.Layer):
@@ -144,15 +153,17 @@ class MCFB(tf.keras.layers.Layer):
   '''
   def __init__(self, img_width, img_height):
     super(MCFB, self).__init__()
-    
+
     self.conv_3x3 = layers.Conv2D(filters = 1, kernel_size = 3, padding = 'same', activation = 'relu') 
     self.conv_1xK = layers.Conv2D(filters = 1, kernel_size = (1,5), padding = 'same', activation = 'relu') 
     self.conv_Kx1 = layers.Conv2D(filters = 1, kernel_size = (5,1), padding = 'same', activation = 'relu') 
-    self.maxpooling = layers.MaxPool2D(pool_size = 1, padding = 'same')
     
     self.M = max(img_width, img_height) # taking max of image's width and height
     self.conv_1xM = layers.Conv2D(filters = 1, kernel_size = (1, self.M), padding = 'same', activation = 'relu') 
-    self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu') 
+    self.conv_Mx1 = layers.Conv2D(filters = 1, kernel_size = (self.M, 1), padding = 'same', activation = 'relu')
+
+    self.img_height = img_height
+    self.img_width = img_width
 
   def call(self, x):
     # local
@@ -160,7 +171,7 @@ class MCFB(tf.keras.layers.Layer):
     # long-ranged
     local_interactions += self.conv_Kx1(self.conv_1xK(x))
     # global interactions
-    global_interactions = tf.nn.sigmoid(self.conv_Mx1(self.conv_1xM(self.maxpooling(x))))
+    global_interactions = tf.nn.sigmoid(self.conv_Mx1(self.conv_1xM(tf.reshape(tf.reduce_max(a, axis = -1), (-1, self.img_height, self.img_width, 1)))))
     res = tf.math.multiply(local_interactions, global_interactions)
     res += local_interactions
 
