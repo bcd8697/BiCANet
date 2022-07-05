@@ -171,7 +171,7 @@ class MCFB(tf.keras.layers.Layer):
     # long-ranged
     local_interactions += self.conv_Kx1(self.conv_1xK(x))
     # global interactions
-    global_interactions = tf.nn.sigmoid(self.conv_Mx1(self.conv_1xM(tf.reshape(tf.reduce_max(a, axis = -1), (-1, self.img_height, self.img_width, 1)))))
+    global_interactions = tf.nn.sigmoid(self.conv_Mx1(self.conv_1xM(tf.reshape(tf.reduce_max(x, axis = -1), (-1, self.img_height, self.img_width, 1)))))
     res = tf.math.multiply(local_interactions, global_interactions)
     res += local_interactions
 
